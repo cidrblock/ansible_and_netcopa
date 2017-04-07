@@ -1,0 +1,16 @@
+
+
+  - name: Modify interface configuration as needed for ({{ interface['parents'][0].split()[1] }})
+    ios_config:
+      host: "{{ inventory_hostname }}"
+      config: "{{ running_configuration }}"
+      parents: "{{ interface['parents'] }}"
+      lines: "{{ interface['lines'] }}"
+      match: line
+      timeout: 60
+    register: config_changes
+
+  - name: Append changes to log ({{ os }})
+    set_fact:
+      changes: "{{ changes|default([]) + ['*** ROLE: ' + role_path|basename + ' ***'] + config_changes['updates'] }}"
+    when: config_changes['updates'] is defined

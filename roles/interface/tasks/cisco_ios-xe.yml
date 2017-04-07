@@ -1,0 +1,11 @@
+
+# render the template
+- name: Set fact for desired interfaces configuration
+  set_fact:
+    interfaces: "{{ lookup('template', os ~'.j2' )|from_yaml }}"
+
+- name: Include OS files for interface
+  include: "{{ os }}-interface.yml"
+  with_items: "{{ interfaces }}"
+  loop_control:
+    loop_var: interface

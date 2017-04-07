@@ -1,0 +1,3 @@
+- name: Show config changes for device
+  debug: msg="{{ changes }}"
+  when: changes is defined
